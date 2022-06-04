@@ -1,36 +1,32 @@
-
 import json
-filepath = "C:\\Test\\Updated_Python_exercises_QA_Engr\\test_payload.json"
+filedir = "C:\\Test\\Updated_Python_exercises_QA_Engr"
+inputJsonFile = "\\test_payload.json"
+outputJsonFile = "\\output_payload.json"
 
-def jsonFileOperation(key_appdate,key_outParams):
-    with open(filepath,'r+') as File:
+def jsonFileOperation(nest_key_appdate, key_outParams):
+    with open(filedir + inputJsonFile, 'r+') as File:
         jsonobject = json.load(File)
         try:
-            for key, val in jsonobject.items():
-                try:
-                    if type(val) == dict:
-                        for key1, val1 in val.items():
-                            del jsonobject[key][key_appdate]
-                            print(f"Result after removing [{key_appdate}] from [{key}] : ", jsonobject[key])
-                    else:
-                        if key == key_outParams:
-                            print(key)
-                            del jsonobject[key]
-                            print(f"Result after removing from [{key}] : ", jsonobject)
+            mylist = [key_outParams,nest_key_appdate]
+            for char in mylist:
+                if char in jsonobject.keys():
+                    del jsonobject[char]
+                else:
+                    for key, value in jsonobject.items():
+                        if type(value) == dict:
+                            if char in value.keys():
+                                del value[char]
+                with open(filedir + outputJsonFile, 'w') as OutFile:
+                    OutFile.seek(0)
+                    json.dump(jsonobject, OutFile)
+                    OutFile.truncate()
+            print("Changes are updated in the new json file :", jsonobject)
 
-                    File.seek(0)
-                    json.dump(jsonobject, File)
-                    File.truncate()
-
-                except  RuntimeError as RE:
-                    print("------------->[Info]Exception thrown while deleting dictionary and the message is : ", RE)
         except  RuntimeError as RE:
             print("------------->[Info]Exception thrown while deleting dictionary and the message is : ", RE)
     print("***This program is developed by John Frederick*** ")
 if __name__ == '__main__':
-    key_appdate = 'appdate'
+    nest_key_appdate = 'appdate'
     key_outParams = 'outParams'
-    jsonFileOperation(key_appdate,key_outParams)
-
-
-
+    jsonFileOperation(nest_key_appdate, key_outParams)
+    
