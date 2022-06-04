@@ -24,8 +24,9 @@ def jtlToCsvFileIO(Filepath,jtlfile1,jtlfile2):
             df1 = pd.read_csv(updateDateFormat,usecols=header)
             date_time = df1['timeStamp']
             for date in range(len(date_time)):
-                date_utctime = datetime.utcfromtimestamp(int(date_time[date]) / 1000)
-                my_datetime_pst = date_utctime.astimezone(pytz.timezone('America/Los_Angeles')).strftime('%Y-%m-%d %H:%M:%S %Z')
+                # date_utctime = datetime.utcfromtimestamp(int(date_time[date]) / 1000)
+                datetandtime = datetime.fromtimestamp((int(date_time[date]) / 1000))
+                my_datetime_pst = datetandtime.astimezone(pytz.timezone('US/Pacific')).strftime('%Y-%m-%d %H:%M:%S %Z')
                 df1.loc[date,'timeStamp'] = my_datetime_pst
             df2 = df1[df1.responseCode != 200]
             print(df2.head(10))
