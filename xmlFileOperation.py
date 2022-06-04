@@ -7,27 +7,14 @@ def ReadWriteXML(x,y):
     root = xmlFile.getroot()
 
     for depart in root.iter('DEPART'):
-        depart.text = str(x)
+        depart.text = (datetime.today() + timedelta(days=x)).strftime('%Y%m%d')
         print("Updated Departure date is: ",depart.text)
     for retrn in root.iter('RETURN'):
-        retrn.text = str(y)
+        retrn.text = (datetime.today() + timedelta(days=y)).strftime('%Y%m%d')
         print("Updated Return date is: ",retrn.text)
     xmlFile.write(FilePath + "\\output_payload.xml")
 
     print("***This program is developed by John Frederick*** ")
 
 if __name__ == '__main__':
-    x = int((datetime.today() + timedelta(days=3)).strftime('%Y%m%d'))
-    y = int((datetime.today() + timedelta(days=5)).strftime('%Y%m%d'))
-    ReadWriteXML(x,y)
-
-
-
-
-
-
-
-
-
-
-
+    ReadWriteXML(5,10)
